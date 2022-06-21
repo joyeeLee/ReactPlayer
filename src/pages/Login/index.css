@@ -1,0 +1,9 @@
+.login_wrapper{
+    width: 500px;
+    height: 200px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: red;
+    top: 50%;
+}
