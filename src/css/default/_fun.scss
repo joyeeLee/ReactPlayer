@@ -1,0 +1,10 @@
+@mixin pre($style,$value){
+    -webkit-#{$style}: $value;
+       -moz-#{$style}: $value;
+        -ms-#{$style}: $value;
+            #{$style}: $value;
+}
+//transition
+@mixin transition($arg){
+    @include pre(transition,$arg);
+}

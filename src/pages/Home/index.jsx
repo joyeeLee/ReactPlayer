@@ -1,6 +1,6 @@
-import './index.css';
+import './index.scss';
 import React from 'react'; 
-
+import Top from '../../components/Top/index.jsx'
 class Home extends React.Component {
     constructor(props){
         super(props);
@@ -18,9 +18,12 @@ class Home extends React.Component {
           }));
     }
     render() {
-      return <div className='home'>
-          <h1 onClick={this.addnumder}>Hello, {this.state.name}{this.state.ky}</h1>
+      return(
+      <div className='home'>
+          <Top></Top>
+          <div className='homeWrapper'></div>
       </div>
+      )
     }
   }
   

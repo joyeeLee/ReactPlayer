@@ -1,0 +1,37 @@
+/* M CSS Document */
+html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{margin:0;padding:0}
+html,body,fieldset,img,iframe,abbr{border:0;}
+img{-webkit-touch-callout: default;}
+li{list-style:none;}
+textarea{overflow:auto;resize:none;}
+a,button{cursor:pointer;}
+h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:bold;}
+i,b,s{font-style:normal;text-decoration:none;}
+a,a:hover{text-decoration:none;}
+body, html {width: 100%; font-weight: normal;display: -webkit-box;-webkit-box-orient: vertical; -webkit-box-align: center;}
+html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%; font-family: "Microsoft YaHei","Helvetica Neue",Arial, HelveticaNeue, Helvetica, "BBAlpha Sans", sans-serif;}
+body{opacity: 1;-webkit-transition:opacity 500ms ease-in;transition:opacity 500ms ease-in; &.fixing{overflow:hidden;}}
+a{text-decoration:none;  }
+input{-webkit-appearance:none; }
+*{ outline: none; -webkit-tap-highlight-color: transparent;  -webkit-touch-callout:none;-webkit-focus-ring-color: rgba(0, 0, 0, 0);}
+p,a,li,span,input{font-size:24px; }
+h1{
+    font-size:32px;
+}
+h2{
+    font-size:34px
+}
+h3{
+    font-size:30px
+}
+h4{
+    font-weight: normal;
+    font-size:30px
+}
+h5{
+    font-size: 28px;
+}
+textarea{
+    font-size: 24px;
+}
+a{color:#434343}
