@@ -1,5 +1,7 @@
 import Home from '../pages/Home';
 import Login from '../pages/Login';
+import MusicPlayer from '../pages/MusicPlayer';
+
 import NotFound from '../pages/NotFound.jsx';
 
 const otherRouter = [
@@ -20,6 +22,12 @@ const pageRouter = [
     title: '首页',
     element: <Home />
   },
+  {
+    path: '/MusicPlayer',
+    title: '音乐播放器',
+    element: <MusicPlayer />
+  },
+
   {
     path: '/login',
     title: '用户登陆',

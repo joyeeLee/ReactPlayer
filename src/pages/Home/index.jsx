@@ -20,10 +20,14 @@ class Home extends React.Component {
     render() {
       return(
       <div className='home'>
-          <Top></Top>
-          <div className='homeWrapper'></div>
+          <div className='homeWrapper'>
+              <Top></Top>
+          </div>
       </div>
       )
+    }
+    componentDidMount(){
+        // console.log(43243)
     }
   }
   

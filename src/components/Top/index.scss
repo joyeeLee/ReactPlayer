@@ -5,4 +5,36 @@
     position: absolute;
     top: 0;
     left: 0;
+    .tag_box{
+        width: auto;
+        height: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        .top_tag{
+            // min-width: 100px;
+            width: fit-content;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            &::after{
+                content: '';
+                display: block;
+                height: 2px;
+                width: 100%;
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                @include transition( all .2s linear);
+                background: white;
+                @include transform(translateX(-100%));
+            }
+            &:hover{
+                &::after{
+                    @include transform(translateX(0));
+                }
+            }
+        }
+    }
 }   
