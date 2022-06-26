@@ -6,16 +6,7 @@ class Home extends React.Component {
         super(props);
         this.state ={
             name:222,
-            ky:props.ky
         }
-    }
-    addnumder= ()=>{
-        let num = this.state.name
-        num++
-
-        this.setState((state, props) => ({
-            name:num
-          }));
     }
     render() {
       return(
@@ -27,7 +18,7 @@ class Home extends React.Component {
       )
     }
     componentDidMount(){
-        // console.log(43243)
+        console.log(43243)
     }
   }
   
