@@ -622,7 +622,8 @@ class OrbitControls extends EventDispatcher {
 					pan( - scope.keyPanSpeed, 0 );
 					needsUpdate = true;
 					break;
-
+				default:
+					break;
 			}
 
 			if ( needsUpdate ) {
@@ -700,7 +701,7 @@ class OrbitControls extends EventDispatcher {
 
 		function handleTouchMoveRotate( event ) {
 
-			if ( pointers.length == 1 ) {
+			if ( pointers.length === 1 ) {
 
 				rotateEnd.set( event.pageX, event.pageY );
 
@@ -987,7 +988,7 @@ class OrbitControls extends EventDispatcher {
 					handleMouseMovePan( event );
 
 					break;
-
+				default:break;
 			}
 
 		}
@@ -1172,7 +1173,7 @@ class OrbitControls extends EventDispatcher {
 
 			for ( let i = 0; i < pointers.length; i ++ ) {
 
-				if ( pointers[ i ].pointerId == event.pointerId ) {
+				if ( pointers[ i ].pointerId === event.pointerId ) {
 
 					pointers.splice( i, 1 );
 					return;
