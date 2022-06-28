@@ -12,17 +12,15 @@ class MusicPlayer extends React.Component{
         window.THREE = THREE;
     }
     initPlayer = ()=>{
-        this.container = document.getElementById('MusicPlayer_wrapper')
+        this.container = document.getElementById('MusicPlayer_wrapper_box')
         let panel_w = this.container.offsetWidth
         let panel_h = this.container.offsetHeight
         this.scene = new THREE.Scene()
-        // this.scene.color = new THREE.Color( 0xffffff );
-   
-        // this.camera =new THREE.OrthographicCamera( 75, panel_w / panel_h, 0.1, 1000 );
-        this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
-        this.camera.position.set(65, 8, - 10);
+        this.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 500);
+        this.camera.position.set(20, 50,50);
         this.camera.lookAt(this.scene.position);
-
+        let grid = new THREE.GridHelper( 50, 50, 0xffffff, 0x555555 );
+        this.scene.add( grid );
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setPixelRatio( window.devicePixelRatio );
 		this.renderer.setSize(panel_w, panel_h);
@@ -34,17 +32,17 @@ class MusicPlayer extends React.Component{
 		this.container.appendChild(this.renderer.domElement);
         this.addLight()
         this.addControls(this.camera)
-        this.setAudioPillars(5)
-        
+        this.setAudioPillars(16)
+        this.setAudioinit()
         this.addplant()
         this.animate()
     }
     // 添加地图控件
 	addControls = (camera)=> {
 		this.controls = new OrbitControls(camera, this.renderer.domElement);
-        this.controls.minDistance = 20;
-        this.controls.maxDistance = 500;
-        this.controls.enablePan = false;
+        // this.controls.minDistance = 20;
+        // this.controls.maxDistance = 500;
+        // this.controls.enablePan = false;
 
         this.controls.update() 
 	}
@@ -56,8 +54,8 @@ class MusicPlayer extends React.Component{
         var ambient = new THREE.AmbientLight( 0xffffff, 0.1 );
         this.scene.add( ambient );
 
-        let spotLight = new THREE.SpotLight( 0xffffff, 1 );
-        spotLight.position.set( 15, 40, 35 );
+        let spotLight = new THREE.SpotLight( 0xffffff, 6 );
+        spotLight.position.set( 15, 100, 35 );
         spotLight.angle = Math.PI / 4;
         spotLight.penumbra = 0.05;
         spotLight.decay = 2;
@@ -70,67 +68,84 @@ class MusicPlayer extends React.Component{
         spotLight.shadow.camera.far = 200;
         this.scene.add( spotLight );
 
-        this.lightHelper = new THREE.SpotLightHelper( spotLight );
-        this.scene.add( this.lightHelper );
+        // this.lightHelper = new THREE.SpotLightHelper( spotLight );
+        // this.scene.add( this.lightHelper );
 
-        this.shadowCameraHelper = new THREE.CameraHelper( spotLight.shadow.camera );
-        this.scene.add( this.shadowCameraHelper );
+        // this.shadowCameraHelper = new THREE.CameraHelper( spotLight.shadow.camera );
+        // this.scene.add( this.shadowCameraHelper );
 
-        this.scene.add( new THREE.AxesHelper( 10 ) );        
+        // this.scene.add( new THREE.AxesHelper( 10 ) );        
+    }
+    setAudioinit=()=>{
+        let material = new THREE.MeshPhongMaterial( { color: 0x808080 } );
+
+        let geometry = new THREE.BoxGeometry( 1, 1 );
+
+        let mesh = new THREE.Mesh( geometry, material );
+        mesh.position.set( 0, 0, 0 );
+        
+        this.A_listener  = new THREE.AudioListener()
+        this.camera.add(this.A_listener );
+
+        this.A_audio = new THREE.PositionalAudio(this.A_listener)
+        this.A_audioLoader = new THREE.AudioLoader();
+        this.A_audioLoader.load('https://sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/music/audio.mp3', (AudioBuffer)=> {
+            this.A_audio.setBuffer(AudioBuffer);
+            this.A_audio.setVolume(0.9); //音量
+            this.A_audio.setRefDistance(2000); //参数值越大,声音越大
+        })
+        mesh.add(this.A_audio)
+        this.scene.add(mesh)
+        this.analyser  = new THREE.AudioAnalyser(this.A_audio,32)
+// console.log(this.analyser.getAverageFrequency())
     }
     setAudioPillars=(num)=>{
-        // this.pillars_g = new THREE.Group()
-        // for (let i = 0; i < num; i++) {
-        //     let pillars = new THREE.BoxGeometry( 1, 20);
-        //     let material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-        //     let cube = new THREE.Mesh( pillars, material );
-        //     cube.position.set(i*10,0)      
-        //     this.pillars_g.add(cube)
-        // }  
-        // this.scene.add(this.pillars_g)
+        let max_w = 20
+        let w_li= Math.floor(max_w/num)
+        this.pillars_g = new THREE.Group()
+        for (let i = 0; i < num; i++) {
+            let pillars = new THREE.BoxGeometry( 1, 10);
+            let material = new THREE.MeshPhongMaterial( { color: 0x00ff00 } );
+            let cube = new THREE.Mesh( pillars, material );
+            cube.castShadow = true;
+            cube.position.set(i*w_li,5)      
+            this.pillars_g.add(cube)
+        }  
+        this.scene.add(this.pillars_g)
         var material = new THREE.MeshPhongMaterial( { color: 0x808080, dithering: true } );
 
         var geometry = new THREE.PlaneBufferGeometry( 2000, 2000 );
 
         var mesh = new THREE.Mesh( geometry, material );
-        mesh.position.set( 0, - 1, 0 );
+        mesh.position.set( 0, 0, 0 );
         mesh.rotation.x = - Math.PI * 0.5;
         mesh.receiveShadow = true;
         this.scene.add( mesh );
-
-
-        var material2 = new THREE.MeshPhongMaterial( { color: 0x4080ff, dithering: true } );
-
-        var geometry2 = new THREE.BoxBufferGeometry( 3, 10, 2 );
-
-        var mesh2 = new THREE.Mesh( geometry2, material2 );
-        mesh2.position.set( 10, 2, 0 );
-        mesh2.castShadow = true;
-        this.scene.add( mesh2 );
-
-
-        // let pillars = new THREE.BoxGeometry( 10, 10,10);
-        // let material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-        // let cube = new THREE.Mesh( pillars, material );
-        // cube.position.set(0,0,0)   
-        // this.scene.add(cube)
 
     }
     // 
     animate =() => {
         requestAnimationFrame( this.animate );
-        // this.pillars_g.rotation.x += 0.01;
-        this.controls.update() 
-        this.lightHelper.update();
-
-        this.shadowCameraHelper.update();
-        // this.pillars_g.rotation.y += 0.01;
+        let analyer_arr = this.analyser.getFrequencyData()
+        // let s_d =new Uint8Array(this.analyser.getAverageFrequency())
+        // let bufferLength = this.analyser.data
+        // let dataArray = new Uint8Array(bufferLength);
+        // console.log(bufferLength)
+        this.pillars_g.children.forEach((item,index) => {
+            item.scale.y  = analyer_arr[index]*.01
+        })
         this.renderer.render( this.scene, this.camera );
       }
+    playAudio =()=>{
+        this.A_audio.play()
+    }
     render(){
         return(
-            <div className="MusicPlayer_wrapper" id="MusicPlayer_wrapper">
+            <div className="MusicPlayer_wrapper">
+                <div className="MusicPlayer_wrapper_box" id="MusicPlayer_wrapper_box">
                 
+                </div>
+                <p className="playmsg" onClick={this.playAudio}>播放音乐</p>
             </div>
         )
     }

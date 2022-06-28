@@ -1,4 +1,20 @@
 .MusicPlayer_wrapper{
     width: 100%;
     height: 100%;
+    position: relative;
+    .MusicPlayer_wrapper_box{
+        width: 100%;
+        height: 100%;
+    }
+    .playmsg{
+        font-size: 30px;
+        color: red;
+        position: absolute;
+        top: 100px;
+        left: 100px;
+        z-index: 2;
+        cursor: pointer;    
+        transform: translateZ(10px);
+        
+    }
 }
