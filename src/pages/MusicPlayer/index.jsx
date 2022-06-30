@@ -8,6 +8,7 @@ class MusicPlayer extends React.Component{
     constructor(props){
         super(props)
         this.state={
+            music_play:false
         }
         window.THREE = THREE;
     }
@@ -17,9 +18,9 @@ class MusicPlayer extends React.Component{
         let panel_h = this.container.offsetHeight
         this.scene = new THREE.Scene()
         this.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 500);
-        this.camera.position.set(20, 50,50);
+        this.camera.position.set(20, 20,50);
         this.camera.lookAt(this.scene.position);
-        let grid = new THREE.GridHelper( 50, 50, 0xffffff, 0x555555 );
+        let grid = new THREE.GridHelper( 32, 32, 0xffffff, 0x555555 );
         this.scene.add( grid );
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setPixelRatio( window.devicePixelRatio );
@@ -32,7 +33,7 @@ class MusicPlayer extends React.Component{
 		this.container.appendChild(this.renderer.domElement);
         this.addLight()
         this.addControls(this.camera)
-        this.setAudioPillars(16)
+        this.setAudioPillars(400)
         this.setAudioinit()
         this.addplant()
         this.animate()
@@ -77,12 +78,14 @@ class MusicPlayer extends React.Component{
         // this.scene.add( new THREE.AxesHelper( 10 ) );        
     }
     setAudioinit=()=>{
-        let material = new THREE.MeshPhongMaterial( { color: 0x808080 } );
+        let material = new THREE.MeshPhongMaterial( { color: 0x808080 ,opacity:0,transparent:true} );
+        // let material = new THREE.MeshPhongMaterial( { color: 0x808080 } );
+
 
         let geometry = new THREE.BoxGeometry( 1, 1 );
 
         let mesh = new THREE.Mesh( geometry, material );
-        mesh.position.set( 0, 0, 0 );
+        mesh.position.set(.5, 0 ,0.5);
         
         this.A_listener  = new THREE.AudioListener()
         this.camera.add(this.A_listener );
@@ -96,32 +99,36 @@ class MusicPlayer extends React.Component{
         })
         mesh.add(this.A_audio)
         this.scene.add(mesh)
-        this.analyser  = new THREE.AudioAnalyser(this.A_audio,32)
+        this.analyser  = new THREE.AudioAnalyser(this.A_audio,1024)
 // console.log(this.analyser.getAverageFrequency())
     }
     setAudioPillars=(num)=>{
-        let max_w = 20
-        let w_li= Math.floor(max_w/num)
-        this.pillars_g = new THREE.Group()
-        for (let i = 0; i < num; i++) {
-            let pillars = new THREE.BoxGeometry( 1, 10);
-            let material = new THREE.MeshPhongMaterial( { color: 0x00ff00 } );
-            let cube = new THREE.Mesh( pillars, material );
-            cube.castShadow = true;
-            cube.position.set(i*w_li,5)      
-            this.pillars_g.add(cube)
+        let pillars = new THREE.BoxGeometry( 1, 1);
+            
+        let material = new THREE.MeshPhongMaterial( { color: 0x00ff00 } );
+        // this.pillars_g = new THREE.Group()
+        this.pillars_g = []
+        for (let i = -10; i < 10; i++) {
+            for (let j = -10; j < 10; j++) {
+                let cube = new THREE.Mesh( pillars, material );
+                cube.castShadow = true;
+                cube.position.set(i+.5,0,j+0.5)    
+                this.pillars_g.push(cube)
+                this.scene.add(cube)                
+            }
+
         }  
-        this.scene.add(this.pillars_g)
-        var material = new THREE.MeshPhongMaterial( { color: 0x808080, dithering: true } );
+        // this.scene.add(this.pillars_g)
+        var material2 = new THREE.MeshPhongMaterial( { color: 0x808080, dithering: true } );
 
-        var geometry = new THREE.PlaneBufferGeometry( 2000, 2000 );
+        var geometry2 = new THREE.PlaneBufferGeometry( 2000, 2000 );
 
-        var mesh = new THREE.Mesh( geometry, material );
+        var mesh = new THREE.Mesh( geometry2, material2 );
         mesh.position.set( 0, 0, 0 );
         mesh.rotation.x = - Math.PI * 0.5;
         mesh.receiveShadow = true;
         this.scene.add( mesh );
-
+        
     }
     // 
     animate =() => {
@@ -131,13 +138,20 @@ class MusicPlayer extends React.Component{
         // let bufferLength = this.analyser.data
         // let dataArray = new Uint8Array(bufferLength);
         // console.log(bufferLength)
-        this.pillars_g.children.forEach((item,index) => {
-            item.scale.y  = analyer_arr[index]*.01
-        })
+        if(this.state.music_play){
+            this.pillars_g.forEach((item,index) => {
+                item.scale.y = analyer_arr[index]*.04+.1
+                // console.log(0,analyer_arr[index]*.01+.1,0)
+            })
+        }
         this.renderer.render( this.scene, this.camera );
       }
     playAudio =()=>{
+        this.setState({
+            music_play:true
+        })
         this.A_audio.play()
+        // console.log(this.analyser.getFrequencyData(),this.pillars_g)
     }
     render(){
         return(
