@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import TWEEN from '@tweenjs/tween.js'
 import './index.scss'
 import {OrbitControls} from '../../lib/MapControls'
+import  MusicControls from '../../components/Controls/music'
 // import * as Tween from  '../../lib/Tween.min.js'
 class MusicPlayer extends React.Component{
     constructor(props){
@@ -160,6 +161,9 @@ class MusicPlayer extends React.Component{
                 
                 </div>
                 <p className="playmsg" onClick={this.playAudio}>播放音乐</p>
+                <div className="musiccontrols">
+                    <MusicControls />
+                </div>
             </div>
         )
     }

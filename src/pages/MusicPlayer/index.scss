@@ -17,4 +17,16 @@
         transform: translateZ(10px);
         
     }
+    .musiccontrols{
+        font-size: 30px;
+        color: red;
+        position: absolute;
+        top: 300px;
+        left: 100px;
+        z-index: 2;
+        width: 800px;
+        height: 200px;
+        cursor: pointer;    
+        transform: translateZ(10px);       
+    }
 }
