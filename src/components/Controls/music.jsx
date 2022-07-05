@@ -1,6 +1,7 @@
 
 import { useState,useRef} from "react";
 import './music.scss'
+import { Slider } from 'tdesign-react';
 function MusicControls() {
     let [musicData,setMusicData] = useState({
         url:'',
@@ -10,6 +11,8 @@ function MusicControls() {
         songList:[],
         playIndex:0,
     })
+    const [value, setValue] = useState(10);
+    // const [rangeValue, setRangeValue] = useState([10, 80]);
     let progressBtn = useRef()
     let [drop,setDrop] = useState(false)
 
@@ -29,19 +32,21 @@ function MusicControls() {
         setDropData((c)=>{
             return {x:e.clientX,y:e.clientY}
         })
+        console.log(43432)
         // progressBtn.current.style.display  = ' none'
         // console.log(progressBtn)
         // console.log(this.progressBtn)
     }
     function bar_move(e){
-        if(drop){
-            let s_x  = dropData.x -e.clientX
-            console.log(progressBtn.current.style,s_x)
-            // progressBtn.current.style.transform = `translate(${s_x}'px', 0)`
-        }
+        // if(drop){
+            let s_x  =e.clientX- dropData.x
+            console.log(s_x)
+            progressBtn.current.style.transform = 'translate('+s_x+'px, 0)'
+        // }
     }
     function bar_up(e){
-        setDrop(false)
+        // setDrop(false)
+        console.log(drop)
     }
     return  (
         <div className="music_con_wrapper">
@@ -51,9 +56,17 @@ function MusicControls() {
                     <p className="song_name">{musicData.songName}</p>
                 </div>
             </div>
-            <div className="controls_progress">
-                <div className="progress_box" onMouseMove={bar_move} onMouseUp={bar_up}>
-                    <i className="progress_btn" ref={progressBtn}  onMouseDown={bar_down} ></i>
+            <div className="controls_progress2">
+            <Slider
+        label={({ value }) => `${value}%`}
+        style={{ marginBottom: 50 }}
+        value={value}
+        onChange={setValue}
+      ></Slider>
+            </div>
+            <div className="controls_progress" onDragOver={(event)=>{event.preventDefault();}}>
+                <div className="progress_box" >
+                    <i className="progress_btn" ref={progressBtn} onMouseDown={bar_down} onDrag={bar_move} onDragEnd={bar_up}  ></i>
                     <div className="progress_bar"></div>
                 </div>
             </div>

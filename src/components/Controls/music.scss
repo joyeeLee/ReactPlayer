@@ -35,11 +35,20 @@
         }
 
     }
+    .controls_progress2{
+        width: 400px;
+        height: 100%;
+        background: red;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .controls_progress{
         width: 400px;
         height: 100%;
         background: red;
         display: flex;
+        display: none;
         justify-content: center;
         align-items: center;
         .progress_box{
@@ -61,9 +70,11 @@
                 height: 12px;
                 position: absolute;
                 top: 50%;
-                left: 0;
+                cursor: pointer;
+                left: 20px;
                 z-index: 2;
-                transform: translateY(-50%);
+                // transform: translateY(-50%);
+                margin-top: -6px;
                 background-color: aliceblue;
             }
         }
