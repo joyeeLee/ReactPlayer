@@ -1,25 +1,27 @@
 
-import { useState,useRef} from "react";
+import { useState,useEffect,useRef} from "react";
 import './music.scss'
 import { Slider } from 'tdesign-react';
+import {durationConversio} from "../../utils/common.js"
 function MusicControls() {
+    // console.log(props)
     let [musicData,setMusicData] = useState({
-        url:'',
+        url:'https://sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/music/audio.mp3',
         songName:'林宥嘉·脆弱一分钟',
         user:'',
         poster:'https://sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/music/poster-small.jpeg',
         songList:[],
+        timeNow:0,
+        timeNowtext:'00:00',
         playIndex:0,
+        duration:0,
+        durationText:'00:00',
+        isplay:false
     })
     const [value, setValue] = useState(10);
+    let controlsAudio = useRef()
     // const [rangeValue, setRangeValue] = useState([10, 80]);
-    let progressBtn = useRef()
-    let [drop,setDrop] = useState(false)
 
-    let [dropData,setDropData] = useState({
-        x:'',
-        y:''
-    })
 
     function changeData (){
         setMusicData((c)=>{
@@ -27,27 +29,32 @@ function MusicControls() {
             return {...c}
         })
     }
-    function bar_down(e){
-        setDrop(true)
-        setDropData((c)=>{
-            return {x:e.clientX,y:e.clientY}
+    function playAudio (){
+        setMusicData((c)=>{
+            c.isplay = true
+            return {...c}
         })
-        console.log(43432)
-        // progressBtn.current.style.display  = ' none'
-        // console.log(progressBtn)
-        // console.log(this.progressBtn)
+        controlsAudio.current.play()
     }
-    function bar_move(e){
-        // if(drop){
-            let s_x  =e.clientX- dropData.x
-            console.log(s_x)
-            progressBtn.current.style.transform = 'translate('+s_x+'px, 0)'
-        // }
+    function pauseAudio (){
+        setMusicData((c)=>{
+            c.isplay = false
+            return {...c}
+        })
+        controlsAudio.current.pause()
     }
-    function bar_up(e){
-        // setDrop(false)
-        console.log(drop)
-    }
+    useEffect(()=>{
+        let t_now = controlsAudio.current.duration*(value/100)
+        setMusicData((e)=>{
+            return {...e,
+                timeNow:t_now,
+                timeNowtext:durationConversio(t_now),
+                duration: controlsAudio.current.duration,
+                durationText:durationConversio(controlsAudio.current.duration),
+            }})
+        
+    },[value])
+
     return  (
         <div className="music_con_wrapper">
             <div className="song_msg">
@@ -56,20 +63,13 @@ function MusicControls() {
                     <p className="song_name">{musicData.songName}</p>
                 </div>
             </div>
+            <audio src={musicData.url} style={{display:'none'}} ref={controlsAudio}></audio>
             <div className="controls_progress2">
-            <Slider
-        label={({ value }) => `${value}%`}
-        style={{ marginBottom: 50 }}
-        value={value}
-        onChange={setValue}
-      ></Slider>
+                <p className="time_now">{musicData.timeNowtext}</p>
+                <Slider label={false} value={value} onChange={setValue}></Slider>
+                <p className="durationText">{musicData.durationText}</p>
             </div>
-            <div className="controls_progress" onDragOver={(event)=>{event.preventDefault();}}>
-                <div className="progress_box" >
-                    <i className="progress_btn" ref={progressBtn} onMouseDown={bar_down} onDrag={bar_move} onDragEnd={bar_up}  ></i>
-                    <div className="progress_bar"></div>
-                </div>
-            </div>
+            {musicData.isplay?(<p onClick={pauseAudio}>暂停</p>):(<p onClick={playAudio}>播放</p>)}
         </div>
     )
 }

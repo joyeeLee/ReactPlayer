@@ -9,7 +9,8 @@ class MusicPlayer extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            music_play:false
+            music_play:false,
+            music_data:{duration:0}
         }
         window.THREE = THREE;
     }
@@ -97,11 +98,12 @@ class MusicPlayer extends React.Component{
             this.A_audio.setBuffer(AudioBuffer);
             this.A_audio.setVolume(0.9); //音量
             this.A_audio.setRefDistance(2000); //参数值越大,声音越大
+            this.setState({music_data:{duration:AudioBuffer.duration}})
         })
         mesh.add(this.A_audio)
+
         this.scene.add(mesh)
         this.analyser  = new THREE.AudioAnalyser(this.A_audio,1024)
-// console.log(this.analyser.getAverageFrequency())
     }
     setAudioPillars=(num)=>{
         let pillars = new THREE.BoxGeometry( 1, 1);
@@ -135,10 +137,7 @@ class MusicPlayer extends React.Component{
     animate =() => {
         requestAnimationFrame( this.animate );
         let analyer_arr = this.analyser.getFrequencyData()
-        // let s_d =new Uint8Array(this.analyser.getAverageFrequency())
-        // let bufferLength = this.analyser.data
-        // let dataArray = new Uint8Array(bufferLength);
-        // console.log(bufferLength)
+        // console.log(this.A_audio)
         if(this.state.music_play){
             this.pillars_g.forEach((item,index) => {
                 item.scale.y = analyer_arr[index]*.04+.1
@@ -152,6 +151,7 @@ class MusicPlayer extends React.Component{
             music_play:true
         })
         this.A_audio.play()
+        
         // console.log(this.analyser.getFrequencyData(),this.pillars_g)
     }
     render(){
@@ -162,7 +162,7 @@ class MusicPlayer extends React.Component{
                 </div>
                 <p className="playmsg" onClick={this.playAudio}>播放音乐</p>
                 <div className="musiccontrols">
-                    <MusicControls />
+                    <MusicControls musicData={this.state.music_data}/>
                 </div>
             </div>
         )
