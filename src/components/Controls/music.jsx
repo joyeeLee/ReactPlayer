@@ -3,22 +3,22 @@ import { useState,useEffect,useRef} from "react";
 import './music.scss'
 import { Slider } from 'tdesign-react';
 import {durationConversio} from "../../utils/common.js"
-function MusicControls() {
-    // console.log(props)
+function MusicControls(props) {
+    let {musicPData} = props
+    const [value, setValue] = useState(0);
     let [musicData,setMusicData] = useState({
         url:'https://sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/music/audio.mp3',
         songName:'林宥嘉·脆弱一分钟',
         user:'',
         poster:'https://sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/music/poster-small.jpeg',
         songList:[],
-        timeNow:0,
-        timeNowtext:'00:00',
+        timeNow:musicPData.duration*(value/100),
+        timeNowtext:durationConversio(musicPData.duration*(value/100)),
         playIndex:0,
-        duration:0,
-        durationText:'00:00',
+        duration:musicPData.duration,
+        durationText:durationConversio(musicPData.duration),
         isplay:false
     })
-    const [value, setValue] = useState(10);
     let controlsAudio = useRef()
     // const [rangeValue, setRangeValue] = useState([10, 80]);
 
@@ -35,26 +35,41 @@ function MusicControls() {
             return {...c}
         })
         controlsAudio.current.play()
+        props.playAudio()
     }
+
     function pauseAudio (){
         setMusicData((c)=>{
             c.isplay = false
             return {...c}
         })
         controlsAudio.current.pause()
+        props.pauseAudio()
     }
     useEffect(()=>{
+        // controlsAudio.current.onloadedmetadata=  () => {
+        //     let t_now = controlsAudio.current.duration*(value/100)
+        //     setMusicData((e)=>{
+        //         return {...e,
+        //             timeNow:t_now,
+        //             timeNowtext:durationConversio(t_now),
+        //             duration: controlsAudio.current.duration,
+        //             durationText:durationConversio(controlsAudio.current.duration),
+        //         }})
+        // };
+        
+    })
+    useEffect(()=>{
         let t_now = controlsAudio.current.duration*(value/100)
+
         setMusicData((e)=>{
             return {...e,
                 timeNow:t_now,
                 timeNowtext:durationConversio(t_now),
-                duration: controlsAudio.current.duration,
-                durationText:durationConversio(controlsAudio.current.duration),
             }})
-        
-    },[value])
+            controlsAudio.current.currentTime  = Number(t_now)?t_now:0
 
+    },[value])
     return  (
         <div className="music_con_wrapper">
             <div className="song_msg">

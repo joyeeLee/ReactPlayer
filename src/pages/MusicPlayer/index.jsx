@@ -104,6 +104,7 @@ class MusicPlayer extends React.Component{
 
         this.scene.add(mesh)
         this.analyser  = new THREE.AudioAnalyser(this.A_audio,1024)
+        // console.log(this.analyser)
     }
     setAudioPillars=(num)=>{
         let pillars = new THREE.BoxGeometry( 1, 1);
@@ -154,15 +155,21 @@ class MusicPlayer extends React.Component{
         
         // console.log(this.analyser.getFrequencyData(),this.pillars_g)
     }
+    pauseAudio = ()=>{
+        this.setState({
+            music_play:false
+        })
+        this.A_audio.pause()        
+    }
     render(){
         return(
             <div className="MusicPlayer_wrapper">
                 <div className="MusicPlayer_wrapper_box" id="MusicPlayer_wrapper_box">
                 
                 </div>
-                <p className="playmsg" onClick={this.playAudio}>播放音乐</p>
+                {/* <p className="playmsg" onClick={this.playAudio}>播放音乐</p> */}
                 <div className="musiccontrols">
-                    <MusicControls musicData={this.state.music_data}/>
+                    <MusicControls musicPData={this.state.music_data} playAudio={this.playAudio} pauseAudio={this.pauseAudio}/>
                 </div>
             </div>
         )
