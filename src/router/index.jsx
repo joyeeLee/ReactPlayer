@@ -1,18 +1,35 @@
 import React from 'react'; 
 import { Route, Routes} from 'react-router-dom'
-// import Home from '../pages/home/index.jsx'
-// import Login from '../pages/login/index.jsx'
 import {pageRouter} from './routersList.jsx'
 
-function RouterBox (){
+function RouterBox ({routeList}){
+
+
+    const checkRouter=(routerItems)=>{
+        if(routerItems && routerItems.length){
+            return routerItems.map(({element,children,path},index)=>{
+                return children && children.length ? (
+                    <Route path={path} element={element} key={index}>
+                           {checkRouter(children)} 
+                    </Route>
+                ):(
+                  <Route   key={index} path={path} element={element}>
+                  </Route> 
+                )
+            })
+        }
+    }
         return (
             <Routes>
-                {
-                    pageRouter.map( r => 
-                        <Route path={r.path} element={r.element} key={r.path}></Route>
-                    )
-                }
-            </Routes>
-        )
+            {checkRouter(routeList)}
+        </Routes>
+          )  
 }
-export default RouterBox;
+
+const AppRuter =()=>{
+    return <RouterBox routeList={pageRouter}></RouterBox>
+}
+// const HomeRuter =()=>{
+//     return <RouterBox routeList={homeChildrensRouter}></RouterBox>
+// }
+export {AppRuter};

@@ -2,15 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './css/index.scss';
 import {BrowserRouter} from 'react-router-dom'
-import RouterP from  './router/index.jsx'
+import {AppRuter} from  './router/index.jsx'
+import { Provider } from 'react-redux'
+import store from './store/index'
 // import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  // <React.StrictMode>
+  <Provider store={store}>
     <BrowserRouter>
-      <RouterP></RouterP> 
+      <AppRuter></AppRuter> 
     </BrowserRouter> 
-  // </React.StrictMode>  
+  </Provider>
 );
 
