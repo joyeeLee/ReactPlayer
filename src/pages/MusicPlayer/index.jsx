@@ -80,6 +80,7 @@ class MusicPlayer extends React.Component{
         // this.scene.add( new THREE.AxesHelper( 10 ) );        
     }
     setAudioinit=()=>{
+        console.log(new THREE.Vector3(0.52,1,1),2222)
         let material = new THREE.MeshPhongMaterial( { color: 0x808080 ,opacity:0,transparent:true} );
         // let material = new THREE.MeshPhongMaterial( { color: 0x808080 } );
 

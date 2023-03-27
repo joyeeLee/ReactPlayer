@@ -1,0 +1,21 @@
+.menuBox{
+    // width: 90%;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    background-color: rgb(255, 255, 255);
+    overflow: hidden;
+    border-radius: 20px;
+    color: rgb(17, 25, 39);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 22px, rgba(0, 0, 0, 0.1) 0px 0px 0px 0.5px;
+}
+.ArrowBackIcon{
+    padding: 10px;
+    border-radius: 20px;
+    background-color: white;
+    position: absolute;
+    top:50%;
+    cursor: pointer;
+    left: 10px;
+    transform: translateY(-50%);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 22px, rgba(0, 0, 0, 0.1) 0px 0px 0px 0.5px;
+}

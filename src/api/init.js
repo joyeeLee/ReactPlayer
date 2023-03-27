@@ -19,7 +19,7 @@ export function getBaseUrl() {
  * @param {String} url [请求的url地址]
  * @param {Object} params [请求时携带的参数]
  */
-export function GET({ url, params }) {
+export function GET( url, params) {
   return new Promise((resolve, reject) => {
     axios
       .get(url, {

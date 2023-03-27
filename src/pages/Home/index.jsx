@@ -22,14 +22,6 @@ const Home  = ()=> {
         disPatch(timerOut())
     }
 
-    const imgChange =(files)=>{
-        var formData = new FormData();
-        formData.append("files", files[0]);
-        formData.append("name", '图片名称');
-        testNode(formData).then(res=>{
-            console.log(res)
-        })
-    }
       return(
       <div className='home'>
             <div className='homeWrapper' id='homeWrapper'>

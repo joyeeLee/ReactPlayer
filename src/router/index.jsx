@@ -13,7 +13,7 @@ function RouterBox ({routeList}){
                            {checkRouter(children)} 
                     </Route>
                 ):(
-                  <Route   key={index} path={path} element={element}>
+                  <Route   key={index} path={path} element={element} index={routerItems?.redirect}>
                   </Route> 
                 )
             })
